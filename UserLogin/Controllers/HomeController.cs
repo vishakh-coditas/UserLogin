@@ -1,4 +1,6 @@
 ﻿
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,6 +83,36 @@ namespace UserLogin.Controllers
         {
             return View();
         }
-        
+
+        public ActionResult KendoData()
+        {
+            ViewBag.Massage = "Kendo-UI Grid Page";
+
+
+            return View();
+        }
+
+        public ActionResult Read([DataSourceRequest]DataSourceRequest request)
+        {
+            IEnumerable<Employee> emp = db.Employees;
+
+            DataSourceResult result = emp.ToDataSourceResult(request, data => new Models.Employee
+            {
+                EmpID = data.EmpID,
+                FirstName = data.FirstName,
+                LastName = data.LastName,
+                UserName = data.UserName,
+                UserPass = data.UserPass,
+                Email = data.Email,
+                Addr = data.Addr,
+                DOB = data.DOB,
+                PhoneNo = data.PhoneNo,
+                Gender = data.Gender
+
+            });
+
+            return Json(result);
+            //return View(result);
+        }
     }
 }
